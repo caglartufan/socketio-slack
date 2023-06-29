@@ -7,8 +7,7 @@ const Room = require('./classes/Room');
 
 app.use(express.static(__dirname + '/public'));
 
-
-const server = app.listen(9000);
+const server = app.listen(9001);
 const io = socketio(server);
 
 app.get('/change-ns', (req, res) => {
@@ -29,5 +28,27 @@ io.on('connection', socket => {
 namespaces.forEach(namespace => {
     io.of(namespace.endpoint).on('connection', socket => {
         console.log(`${socket.id} has connected to ${namespace.endpoint}`);
+
+        socket.on('joinRoom', async (roomId, callback) => {
+            roomId = parseInt(roomId);
+            const room = namespace.rooms.find(nsRoom => nsRoom.id === roomId);
+            const roomName = room.id + '-' + room.title;
+
+            socket.rooms.forEach(joinedRoom => {
+                if(joinedRoom !== socket.id && joinedRoom !== roomName) {
+                    socket.leave(joinedRoom);
+                }
+            });
+
+            socket.join(roomName);
+
+            const sockets = await io.of(namespace.endpoint).in(roomName).fetchSockets();
+            const socketCount = sockets.length;
+
+            callback({
+                roomTitle: room.title,
+                numUsers: socketCount
+            });
+        });
     });
 });
