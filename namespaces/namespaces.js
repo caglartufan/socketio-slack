@@ -4,7 +4,7 @@ const app = express();
 
 app.use(express.static(__dirname + '/public'));
 
-const server = app.listen(8000);
+const server = app.listen(8001);
 const io = socketio(server);
 
 io.on('connection', socket => {

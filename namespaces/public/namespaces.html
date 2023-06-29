@@ -50,7 +50,8 @@
 		</div>
 		<script src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript">
-			const socket = io("http://localhost:8000");
+			const socket = io("http://localhost:8001");
+			const adminSocket = io("http://localhost:8001/admin")
 
 			socket.on('connect', () => {
 				console.log(socket.id);

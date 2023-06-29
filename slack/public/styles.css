@@ -107,7 +107,7 @@ input {
     list-style-type: none; margin: 0; padding: 0; 
     color: #3B4048;
     max-height: 85%;
-    overflow: scroll;
+    overflow: auto;
 }
 #messages li .user-image{
     /* width: 50px; */
