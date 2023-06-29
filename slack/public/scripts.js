@@ -28,6 +28,12 @@ socket.on('nsList', nsData => {
                 <img src="${ns.image}" alt="${ns.name}" />
             </div>`
         );
+
+        const thisNs = io(`http://localhost:9000${ns.endpoint}`);
+        thisNs.on('nsChange', data => {
+            console.log('Namespace changed!');
+            console.log(data);
+        });
     });
 
     const namespaceElements = document.getElementsByClassName('namespace');
