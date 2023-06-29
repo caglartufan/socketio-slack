@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket.io 101</title>
+</head>
+<body>
+    <h1>Express Server Waiting For Connections!</h1>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+        const socket = io('http://localhost:8000');
+
+        socket.on('connect', () => {
+            console.log(socket.id);
+        });
+
+        socket.on('messageFromServer', data => {
+            console.log(data);
+        });
+    </script>
+</body>
+</html>
