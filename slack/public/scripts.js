@@ -8,8 +8,22 @@ const socket = io('http://localhost:9001');
 const namespaceSockets = [];
 const listeners = {
     nsChange: [],
-    newChat: []
+    messageToRoom: []
 };
+let selectedNsId = 0;
+
+document.getElementById('message-form').addEventListener('submit', event => {
+    event.preventDefault();
+    
+    const newMessage = event.target['user-message'].value;
+
+    namespaceSockets[selectedNsId].emit('newMessageToRoom', {
+        newMessage,
+        username,
+        avatar: 'https://via.placeholder.com/30'
+    });
+});
+
 const addListeners = nsId => {
     if(!listeners.nsChange[nsId]) {
         namespaceSockets[nsId].on('nsChange', data => {
@@ -25,6 +39,13 @@ const addListeners = nsId => {
             });
         });
         listeners.nsChange[nsId] = true;
+    }
+    if(!listeners.messageToRoom[nsId]) {
+        namespaceSockets[nsId].on('messageToRoom', messageObj => {
+            console.log(messageObj);
+            document.getElementById('messages').innerHTML += ;
+        });
+        listeners.messageToRoom[nsId] = true;
     }
 };
 
@@ -68,3 +89,15 @@ socket.on('nsList', nsData => {
         });
     });
 });
+
+const buildMessageHtml = messageObj => (
+    `<li>
+        <div class="user-image">
+            <img src="${messageObj.avatar}" alt="${messageObj.username}" />
+        </div>
+        <div class="user-message">
+            <div class="user-name-time">${messageObj.username} <span>${messageObj.date}</span></div>
+            <div class="message-text">${messageObj.newMessage}</div>
+        </div>
+    </li>`
+);

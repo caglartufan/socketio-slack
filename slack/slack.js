@@ -50,5 +50,14 @@ namespaces.forEach(namespace => {
                 numUsers: socketCount
             });
         });
+
+        socket.on('newMessageToRoom', messageObj => {
+            const roomName = Array.from(socket.rooms).pop();
+            console.log(roomName);
+
+            messageObj.date = Date.now();
+
+            io.of(namespace.endpoint).in(roomName).emit('messageToRoom', messageObj);
+        });
     });
 });

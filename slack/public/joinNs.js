@@ -3,6 +3,9 @@ const joinNs = (element, nsData) => {
     const clickedNs = nsData.find(row => row.endpoint === nsEndpoint);
     const rooms = clickedNs.rooms;
     const roomList = document.querySelector('.room-list');
+
+    selectedNsId = clickedNs.id;
+
     let firstRoom;
 
     roomList.innerHTML = '';
